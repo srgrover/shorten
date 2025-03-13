@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { MdAccountCircle } from "react-icons/md"
+import { AvatarMenu } from "./AvatarMenu"
 
 export const TopMenu = () => {
     return (
@@ -36,16 +37,7 @@ export const TopMenu = () => {
                             </div>
                         </div>
 
-
-                        <div className="block relative">
-                            <button type="button" className="inline-block py-2 px-3 hover:bg-gray-200 rounded-md relative ">
-                                <div className="flex items-center h-5">
-                                    <div className="_xpkakx" style={{ display: 'block', height: '20px', width: '20px', fill: 'currentcolor' }}>
-                                        <MdAccountCircle size={ 20 } />
-                                    </div>
-                                </div>
-                            </button>
-                        </div>
+                        <AvatarMenu />
                     </div>
                 </div>
             </nav>
