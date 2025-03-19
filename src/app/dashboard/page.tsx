@@ -82,7 +82,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
                 {
                     links.map(({slug, url, createdAt, clics}) => (
-                        <div className="p-3 rounded bg-white border border-gray-200">
+                        <div  key={slug} className="p-3 rounded bg-white border border-gray-200">
                             <div className="flex justify-between">
                                 <p className="text-xl font-bold">
                                     <span className="font-light text-gray-400">/</span>
