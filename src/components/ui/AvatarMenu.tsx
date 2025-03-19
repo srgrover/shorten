@@ -43,12 +43,11 @@ export const AvatarMenu = () => {
                 </div>
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                     {
-                        menuItems.map((item, index) => (
+                        menuItems.map(({name, icon, href}, index) => (
                             <li key={index} className="px-2 py-1">
-                                <Link href={item.href} onClick={() => setOpenMenu(false)} className="flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    {item.icon}
-                                    <span className="flex items-center self-center">{item.name}</span>
-
+                                <Link href={ href } onClick={() => setOpenMenu(false)} className="flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    { icon }
+                                    <span className="flex items-center self-center">{ name }</span>
                                 </Link>
                             </li>
                         ))
