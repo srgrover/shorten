@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { MdAccountCircle } from "react-icons/md"
 import { AvatarMenu } from "./AvatarMenu"
 
 export const TopMenu = () => {
