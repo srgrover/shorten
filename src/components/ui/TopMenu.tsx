@@ -1,7 +1,10 @@
 import Link from "next/link"
 import { AvatarMenu } from "./AvatarMenu"
+import { auth } from "@/auth.config"
 
-export const TopMenu = () => {
+export const TopMenu = async() => {
+    const session = await auth();
+    console.log({session})
     return (
         <>
             <nav className=" bg-white w-full flex relative justify-between items-center mx-auto px-20 h-20">
@@ -36,6 +39,7 @@ export const TopMenu = () => {
                             </div>
                         </div>
 
+                        <Link href="/auth/login" className="px-3 py-2 flex items-center justify-center shadow-sm shadow-gray-400/50 rounded-md cursor-pointer hover:bg-gray-100">Get started</Link>
                         <AvatarMenu />
                     </div>
                 </div>
