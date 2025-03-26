@@ -2,6 +2,7 @@ import Link from "next/link"
 import { auth } from "@/auth.config"
 import { User } from "next-auth";
 import { DropdownAvatar } from "./DropdownAvatar";
+import { ArrowRightIcon } from "flowbite-react";
 
 export const TopMenu = async() => {
     const session = await auth();
@@ -43,7 +44,10 @@ export const TopMenu = async() => {
                         {
                             (session?.user)
                             ? <DropdownAvatar user={ session.user as User } />
-                            : <Link href="/auth/login" className="px-3 py-2 flex items-center justify-center shadow-sm shadow-gray-400/50 rounded-md cursor-pointer hover:bg-gray-100">Get started</Link>
+                            : <Link href="/auth/login" className="px-3 py-2 flex gap-2 items-center justify-center shadow-sm shadow-gray-400/50 rounded-md cursor-pointer hover:bg-gray-100">
+                                Get started
+                                <ArrowRightIcon/>
+                              </Link>
                         }
                         
                     </div>
