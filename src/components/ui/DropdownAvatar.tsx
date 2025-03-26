@@ -36,9 +36,8 @@ export const DropdownAvatar = ({ user }: Props) => {
     const { name, email, image } = user;
 
     const signOut = async() => {
-        await logout().then(() => {
-            window.location.href = '/';
-        });
+        await logout();
+        window.location.replace('/');
     }
 
     return (
@@ -66,7 +65,7 @@ export const DropdownAvatar = ({ user }: Props) => {
                 ))
             }
             <DropdownDivider />
-            <DropdownItem onClick={() => signOut()} icon={ FaSignOutAlt }>Sign out</DropdownItem>
+            <DropdownItem onClick={async() => await signOut()} icon={ FaSignOutAlt }>Sign out</DropdownItem>
         </Dropdown>
     );
 }
