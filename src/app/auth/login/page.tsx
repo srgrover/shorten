@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 export default async function Login() {
     const session = await auth();
+    console.log("🔍 ~ Login ~ src/app/auth/login/page.tsx:6 ~ session:", session)
     if(session) return redirect('/dashboard');
     
     return (

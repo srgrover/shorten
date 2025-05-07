@@ -3,11 +3,11 @@ import { ButtonProvider } from "./ButtonProvider"
 
 const providers = [
     {
-        provider: 'google',
+        provider: 'Google',
         icon: <IoLogoGoogle size={20} />
     },
     {
-        provider: 'github',
+        provider: 'GitHub',
         icon: <IoLogoGithub size={20} />
     }
 ]
