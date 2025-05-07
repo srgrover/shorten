@@ -1,1 +1,1 @@
-export * from './initialData'
+export * from './seed'
