@@ -3,9 +3,13 @@ import { auth } from "@/auth.config"
 import { User } from "next-auth";
 import { DropdownAvatar } from "./DropdownAvatar";
 import { ArrowRightIcon } from "flowbite-react";
+import { logout } from "@/actions";
 
 export const TopMenu = async() => {
     const session = await auth();
+    console.log("LA SESION",session)
+
+    //if(session) await logout();
 
     return (
         <>
