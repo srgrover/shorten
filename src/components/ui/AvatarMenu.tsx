@@ -1,8 +1,12 @@
 'use client'
 
+import { logout } from "@/actions";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link"
 import { useState } from "react"
 import { IoHomeOutline, IoLogOutOutline, IoSettingsOutline } from "react-icons/io5";
+import { LuLoader } from "react-icons/lu";
 import { RiDashboardLine } from "react-icons/ri";
 import { RxAvatar } from "react-icons/rx"
 
@@ -25,19 +29,34 @@ const menuItems = [
 ];
 
 export const AvatarMenu = () => {
-    const [openMenu, setOpenMenu] = useState<boolean>(false)
+    const { data: session } = useSession();
+    const [openMenu, setOpenMenu] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    
+    if (!session) return null;
+    const { user } = session;
+
+    const tryToSignOut = async () => {
+        setLoading(true);
+        signOut({ callbackUrl: '/' });
+    }
 
     return (
         <>
             <button onClick={() => setOpenMenu(!openMenu)} className="w-10 h-10 flex items-center justify-center rounded-md cursor-pointer hover:bg-gray-100">
-                <RxAvatar size={25} />
+                {
+                    user?.image 
+                    ? <Image src={user?.image} alt={user?.name ?? 'Avatar'} width={25} height={25}></Image>
+                    : <RxAvatar size={25} />
+                }
+                
             </button>
             <div onClick={() => setOpenMenu(!openMenu)} data-state={openMenu ? 'open' : 'closed'} className={`${!openMenu && 'hidden'} fixed inset-0 z-5 data-[state=${openMenu ? 'open' : 'closed'}]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0`} style={{ pointerEvents: 'auto' }}></div>
 
             <div className={`${!openMenu && 'hidden'} z-10 absolute right-0 top-7 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-auto dark:bg-gray-700 dark:divide-gray-600`}>
                 <div className="px-4 py-4 text-sm text-gray-900 dark:text-white">
-                    <div>Jonathan Moya Moreno</div>
-                    <div className="font-medium truncate text-xs text-gray-400">dev.jonathan.moya@gmail.com</div>
+                    <div>{ user?.name ?? 'Usuario' }</div>
+                    <div className="font-medium truncate text-xs text-gray-400">{ user?.email ?? 'Sin email' } </div>
                 </div>
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                     {
@@ -52,10 +71,13 @@ export const AvatarMenu = () => {
                     }
                 </ul>
                 <div className="p-2">
-                    <Link href={'/'} onClick={() => setOpenMenu(false)} className="text-sm flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    <button onClick={() => tryToSignOut()} className="text-sm flex w-full cursor-pointer gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        {
+                            !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
+                        }
                         <IoLogOutOutline size={15} />
                         <span className="flex items-center self-center">Salir</span>
-                    </Link>
+                    </button>
                 </div>
             </div>
         </>

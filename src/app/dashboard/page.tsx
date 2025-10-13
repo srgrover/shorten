@@ -1,37 +1,26 @@
-import { Metadata } from "next";
+import { getSlugsByUserId } from "@/actions/slugs/get-slugs-by-user-id";
+import { IoAdd, IoCubeOutline, IoSearch } from "react-icons/io5";
+import { auth } from "@/auth.config";
+import { redirect } from "next/navigation";
+import { DashboardTable } from "@/components/ui/DashboardTable";
+import { Slug } from "@/interfaces";
 import { BiPlus } from "react-icons/bi";
-import { IoMdStats } from "react-icons/io";
-import { IoCopyOutline, IoCubeOutline, IoSearch, IoSettingsOutline, IoTrashOutline } from "react-icons/io5";
 import { TbTagStarred } from "react-icons/tb";
+import { LuWandSparkles } from "react-icons/lu";
 
-export const metadata: Metadata = {
-    title: "Dashboard",
-};
+export default async function DashboardPage() {
 
-const links = [
-    {
-        slug: 'rygeas',
-        url: 'https://jonathanmoya.com',
-        createdAt: new Date(),
-        clics: 36
-    },
-    {
-        slug: 'thdere',
-        url: 'https://minuevaweb.com',
-        createdAt: new Date(),
-        clics: 12
-    },
-    {
-        slug: 'fgrhyt',
-        url: 'https://estaesotraweb.com',
-        createdAt: new Date(),
-        clics: 23
-    },
-]
+    const session = await auth();
+    if (!session?.user) redirect('/auth/login')
 
-export default function DashboardPage() {
+    let { slugs } = await getSlugsByUserId();
+
+    console.log(slugs)
+
+    // if (slugs == null || slugs == undefined || slugs.length == 0) slugs = seedSlugs
+
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-8">
             <div className="flex justify-between">
                 <div className="relative w-full md:w-72 md:max-w-72">
                     <IoSearch size={16} className="lucide lucide-search absolute left-2 top-1/2 -translate-y-1/2 transform text-neutral-400" />
@@ -54,7 +43,7 @@ export default function DashboardPage() {
                     dark:border-neutral-800 dark:placeholder:text-neutral-400 
                     dark:focus-visible:ring-neutral-700 items-center gap-2">
                         <IoCubeOutline size={16} />
-                        <span className="flex self-center">04 / 15</span>
+                        <span className="flex self-center">{slugs!.length || 0} / 15</span>
                     </div>
 
                     <button className="flex rounded-md border border-neutral-300 bg-transparent px-4 py-2 
@@ -79,49 +68,18 @@ export default function DashboardPage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
-                {
-                    links.map(({slug, url, createdAt, clics}) => (
-                        <div  key={slug} className="p-3 rounded bg-white border border-gray-200">
-                            <div className="flex justify-between">
-                                <p className="text-xl font-bold">
-                                    <span className="font-light text-gray-400">/</span>
-                                    { slug }
-                                </p>
-                                <div className="flex gap-2 items-center justify-end">
-                                    <span className="cursor-default items-center space-x-1 text-xs hidden border-r border-neutral-200 pr-2 md:flex">
-                                        <IoMdStats size={14} />
-                                        <pre className="text-sm">{ clics } clicks</pre>
-                                    </span>
-
-                                    <div className="flex gap-3 items-center justify-end">
-                                        <button className="cursor-pointer">
-                                            <IoCopyOutline size={15} />
-                                        </button>
-                                        <button className="cursor-pointer">
-                                            <IoSettingsOutline size={15} />
-                                        </button>
-                                        <button className="cursor-pointer">
-                                            <IoTrashOutline size={15} />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <p className="font-extrmb-2 truncate select-all font-mono text-sm text-neutral-400 dark:text-neutral-400alight">
-                                { url }
-                            </p>
-                            <p className="text-right text-xs text-neutral-500">
-                                { createdAt.toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric',
-                                }) }
-                            </p>
-                        </div>
-                    ))
-                }
-            </div>
+            {
+                slugs!.length > 0 
+                ? <DashboardTable slugs={ slugs as Slug[] || [] } />
+                : <div className="flex flex-col gap-4 items-center justify-center">
+                    <LuWandSparkles size={35} className="text-slate-700" />
+                    <span className="text-gray-700">No links found</span>
+                    <button className="transform flex gap-2 cursor-pointer items-center rounded-md border border-gray-200 px-5 py-2 font-medium text-gray-900 transition-colors hover:bg-gray-50">
+                        <IoAdd size={16} />
+                        Create a new link
+                    </button>
+                </div>
+            }
         </div>
-
-    );
+    )
 }

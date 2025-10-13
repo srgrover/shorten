@@ -1,3 +1,4 @@
+import { Slug } from "@/interfaces"
 
 export type SlugSeed = {
     id?: string
@@ -8,14 +9,15 @@ export type SlugSeed = {
     updatedAt?: Date | string
   }
 
-export const seedSlugs: SlugSeed[] = [
+export const seedSlugs: Slug[] = [
     {
         id: crypto.randomUUID(),
         slug: 'rygeas',
         url: 'https://jonathanmoya.com',
         createdAt: new Date(),
         updatedAt: new Date(),
-        clicks: 36
+        clicks: 36,
+        userId: '1'
     },
     {
         id: crypto.randomUUID(),
@@ -23,7 +25,8 @@ export const seedSlugs: SlugSeed[] = [
         url: 'https://google.com',
         createdAt: new Date(),
         updatedAt: new Date(),
-        clicks: 36
+        clicks: 36,
+        userId: '1'
     },
     {
         id: crypto.randomUUID(),
@@ -31,7 +34,8 @@ export const seedSlugs: SlugSeed[] = [
         url: 'https://youtube.com',
         createdAt: new Date(),
         updatedAt: new Date(),
-        clicks: 36
+        clicks: 36,
+        userId: '1'
     },
     {
         id: crypto.randomUUID(),
@@ -39,6 +43,7 @@ export const seedSlugs: SlugSeed[] = [
         url: 'https://vercel.app',
         createdAt: new Date(),
         updatedAt: new Date(),
-        clicks: 36
+        clicks: 36,
+        userId: '1'
     },
 ]

@@ -1,17 +1,26 @@
+'use client'
+
 import Link from "next/link"
 import { AvatarMenu } from "./AvatarMenu"
-import { auth } from "@/auth.config"
+import { useSession } from "next-auth/react"
+import { CiLink } from "react-icons/ci"
+import { BsLink, BsLink45Deg } from "react-icons/bs"
+import { BiLinkAlt } from "react-icons/bi"
+import { FaGithub } from "react-icons/fa6"
 
-export const TopMenu = async() => {
-    const session = await auth();
-    console.log({session})
+export const TopMenu = () => {
+    const { data: session } = useSession();
+
     return (
         <>
             <nav className=" bg-white w-full flex relative justify-between items-center mx-auto px-20 h-20">
                 <div className="inline-flex">
                     <Link href="/">
                         <div className="hidden md:block">
-                            <span className="text-2xl font-semibold text-gray-800">shrturl</span>
+                            <span className="text-2xl flex gap-2 items-center font-semibold text-gray-700">
+                                <BiLinkAlt size={25} className="bg-gray-700 p-1 rounded text-white" />
+                                slgs
+                            </span>
                         </div>
                     </Link>
                 </div>
@@ -19,28 +28,18 @@ export const TopMenu = async() => {
                 <div className="flex-initial">
                     <div className="flex justify-end items-center relative">
                         <div className="flex mr-4 items-center">
-                            <a className="inline-block py-2 px-3 hover:bg-gray-200 rounded-full" href="#">
-                                <div className="flex items-center relative cursor-pointer whitespace-nowrap">Become a host</div>
+                            <a className="inline-block py-2 px-2 cursor-pointer hover:bg-gray-100 rounded-md" href="https://github.com/srgrover/shorten">
+                                <div className="flex items-center relative cursor-pointer whitespace-nowrap">
+                                    <FaGithub size={25} />
+                                </div>
                             </a>
-                            <div className="block relative">
-                                <button type="button" className="inline-block py-2 px-3 hover:bg-gray-200 rounded-full relative ">
-                                    <div className="flex items-center h-5">
-                                        <div className="_xpkakx" style={{ display: 'block', height: '16px', width: '16px', fill: 'currentcolor' }}>
-                                            <svg viewBox="0 0 16 16"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                aria-hidden="true" role="presentation"
-                                                focusable="false"
-                                                style={{ display: 'block', height: '16px', width: '16px', fill: 'currentcolor' }}
-                                            >
-                                                <path d="m8.002.25a7.77 7.77 0 0 1 7.748 7.776 7.75 7.75 0 0 1 -7.521 7.72l-.246.004a7.75 7.75 0 0 1 -7.73-7.513l-.003-.245a7.75 7.75 0 0 1 7.752-7.742zm1.949 8.5h-3.903c.155 2.897 1.176 5.343 1.886 5.493l.068.007c.68-.002 1.72-2.365 1.932-5.23zm4.255 0h-2.752c-.091 1.96-.53 3.783-1.188 5.076a6.257 6.257 0 0 0 3.905-4.829zm-9.661 0h-2.75a6.257 6.257 0 0 0 3.934 5.075c-.615-1.208-1.036-2.875-1.162-4.686l-.022-.39zm1.188-6.576-.115.046a6.257 6.257 0 0 0 -3.823 5.03h2.75c.085-1.83.471-3.54 1.059-4.81zm2.262-.424c-.702.002-1.784 2.512-1.947 5.5h3.904c-.156-2.903-1.178-5.343-1.892-5.494l-.065-.007zm2.28.432.023.05c.643 1.288 1.069 3.084 1.157 5.018h2.748a6.275 6.275 0 0 0 -3.929-5.068z"></path></svg>
-                                        </div>
-                                    </div>
-                                </button>
-                            </div>
                         </div>
 
-                        <Link href="/auth/login" className="px-3 py-2 flex items-center justify-center shadow-sm shadow-gray-400/50 rounded-md cursor-pointer hover:bg-gray-100">Get started</Link>
-                        <AvatarMenu />
+                        {
+                            (session?.user)
+                                ? <AvatarMenu />
+                                : <Link href="/auth/login" className="px-3 py-2 flex items-center justify-center shadow-sm shadow-gray-400/50 rounded-md cursor-pointer hover:bg-gray-100">Get started</Link>
+                        }
                     </div>
                 </div>
             </nav>
