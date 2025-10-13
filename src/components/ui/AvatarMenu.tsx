@@ -1,6 +1,5 @@
 'use client'
 
-import { logout } from "@/actions";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link"
@@ -75,7 +74,6 @@ export const AvatarMenu = () => {
                         {
                             !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
                         }
-                        <IoLogOutOutline size={15} />
                         <span className="flex items-center self-center">Salir</span>
                     </button>
                 </div>
