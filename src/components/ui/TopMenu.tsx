@@ -3,8 +3,6 @@
 import Link from "next/link"
 import { AvatarMenu } from "./AvatarMenu"
 import { useSession } from "next-auth/react"
-import { CiLink } from "react-icons/ci"
-import { BsLink, BsLink45Deg } from "react-icons/bs"
 import { BiLinkAlt } from "react-icons/bi"
 import { FaGithub } from "react-icons/fa6"
 

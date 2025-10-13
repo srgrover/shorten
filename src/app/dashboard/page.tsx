@@ -13,7 +13,7 @@ export default async function DashboardPage() {
     const session = await auth();
     if (!session?.user) redirect('/auth/login')
 
-    let { slugs } = await getSlugsByUserId();
+    const { slugs } = await getSlugsByUserId();
 
     console.log(slugs)
 
