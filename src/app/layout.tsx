@@ -4,6 +4,9 @@ import "./globals.css";
 import { TopMenu } from "@/components";
 import { Providers } from "@/components/providers/Providers";
 import { auth } from "@/auth.config";
+import "@radix-ui/themes/styles.css";
+import { Theme } from "@radix-ui/themes";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +33,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers session={session}>
-          <TopMenu />
-          {children}
-        </Providers>
-      </body>
+      <Theme>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <Providers session={session}>
+            <TopMenu />
+            {children}
+          </Providers>
+        </body>
+      </Theme>
     </html>
   );
 }
