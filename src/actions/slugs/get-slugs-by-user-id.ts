@@ -13,6 +13,8 @@ export const getSlugsByUserId = async () => {
     };
   }
 
+  console.log(session)
+
   const slugs = await prisma.slug.findMany({
     where: {
       userId: session.user.id,
