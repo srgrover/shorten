@@ -1,13 +1,14 @@
 'use client'
 
+import { Avatar } from "@radix-ui/themes/components/avatar";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link"
 import { useState } from "react"
 import { IoHomeOutline, IoLogOutOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuLoader } from "react-icons/lu";
 import { RiDashboardLine } from "react-icons/ri";
 import { RxAvatar } from "react-icons/rx"
+import { Button } from "./button";
 
 const menuItems = [
     {
@@ -42,14 +43,14 @@ export const AvatarMenu = () => {
 
     return (
         <>
-            <button onClick={() => setOpenMenu(!openMenu)} className="w-10 h-10 flex items-center justify-center rounded-md cursor-pointer hover:bg-gray-100">
+            <Button size="icon" onClick={() => setOpenMenu(!openMenu)} className="w-10 h-10 flex items-center justify-center rounded-md cursor-pointer hover:bg-gray-100">
                 {
                     user?.image 
-                    ? <Image src={user?.image} alt={user?.name ?? 'Avatar'} width={25} height={25}></Image>
+                    ? <Avatar size="2" radius="full" fallback={user!.name![0]} src={user!.image!} alt={user!.name ?? 'Avatar'} />
                     : <RxAvatar size={25} />
                 }
                 
-            </button>
+            </Button>
             <div onClick={() => setOpenMenu(!openMenu)} data-state={openMenu ? 'open' : 'closed'} className={`${!openMenu && 'hidden'} fixed inset-0 z-5 data-[state=${openMenu ? 'open' : 'closed'}]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0`} style={{ pointerEvents: 'auto' }}></div>
 
             <div className={`${!openMenu && 'hidden'} z-10 absolute right-0 top-7 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-auto dark:bg-gray-700 dark:divide-gray-600`}>
