@@ -1,6 +1,7 @@
 'use client'
 
 import { login } from "@/actions";
+import { Button } from "@radix-ui/themes";
 import { useState } from "react";
 import { LuLoader } from "react-icons/lu";
 
@@ -20,13 +21,15 @@ export const ButtonProvider = ({ provider, icon }: Props) => {
     console.log('PROVIDER',provider)
 
     return (
-        <button
+        <Button
+            color="gray"
+            variant="outline"
+            size="2"
             onClick={ async() => { await tryToLogin() } }
             type="button"
-            className="px-3 py-2 flex items-center w-full gap-2 justify-center shadow-sm shadow-gray-300/50 rounded-md cursor-pointer hover:bg-gray-100">
-            
+            highContrast>
             { !loading ? icon : <LuLoader size={20} className="animate-spin" /> }
             Continue with { provider.toWellFormed() }
-        </button>
+        </Button>
     )
 }
