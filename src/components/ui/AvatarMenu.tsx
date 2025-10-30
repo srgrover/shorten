@@ -1,13 +1,9 @@
 'use client'
 
-import { Avatar } from "@radix-ui/themes/components/avatar";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link"
 import { useState } from "react"
-import { IoHomeOutline, IoLogOutOutline, IoSettingsOutline } from "react-icons/io5";
-import { LuLoader } from "react-icons/lu";
+import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { RiDashboardLine } from "react-icons/ri";
-import { RxAvatar } from "react-icons/rx"
 import { Button } from "./button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./dropdown-menu";
 

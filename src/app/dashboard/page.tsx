@@ -7,8 +7,7 @@ import { Slug } from "@/interfaces";
 import { BiPlus } from "react-icons/bi";
 import { TbTagStarred } from "react-icons/tb";
 import { LuWandSparkles } from "react-icons/lu";
-import { NewLinkModal } from "@/components";
-import { Button } from "@radix-ui/themes/components/button";
+import { Button, NewLinkModal } from "@/components";
 
 export default async function DashboardPage() {
     const session = await auth();
@@ -38,18 +37,18 @@ export default async function DashboardPage() {
                     </div>
 
                     <div className="flex gap-2 items-center justify-end">
-                        <Button size="2" color="gray" variant="outline">
+                        <Button size="default" color="gray" variant="outline">
                             <IoCubeOutline size={16} />
                             <span className="flex self-center">{slugs!.length || 0} / 15</span>
                         </Button>
 
-                        <Button size="2" color="gray" variant="outline">
+                        <Button size="default" color="gray" variant="outline">
                             <TbTagStarred size={16} />
                             <span className="flex self-center">Select a tag</span>
                         </Button>
 
                         <NewLinkModal tags={[]}>
-                            <Button size="2" color="gray" variant="solid" highContrast>
+                            <Button size="default" color="gray" variant="default">
                                 <BiPlus size={16} />
                                 Create Link
                             </Button>
@@ -64,7 +63,7 @@ export default async function DashboardPage() {
                             <LuWandSparkles size={35} className="text-slate-700" />
                             <span className="text-gray-700">No links found</span>
                             <NewLinkModal tags={[]}>
-                            <Button size="2" color="gray" variant="outline">
+                            <Button size="default" color="gray" variant="outline">
                                 <BiPlus size={16} />
                                 Create a new Link
                             </Button>
