@@ -1,116 +1,127 @@
 
 'use client';
 
-import { Box, Dialog, Flex, Select, TextArea, TextField, Text, Heading } from '@radix-ui/themes/components/index';
 import { FaArrowsRotate } from 'react-icons/fa6';
 import { LuLink, LuRocket, LuTags } from 'react-icons/lu';
-import type { Tags } from "@prisma/client";
+import type { Slug, Tags } from "@prisma/client";
 import { Button } from './button';
-// import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { createNewSlug } from '@/actions';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from './input';
+import { Textarea } from './textarea';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { createSlugSchema } from '@/schemas';
 
 interface Props {
     children: React.ReactNode
     tags: Tags[];
 }
 
-// const formSchema = z.object({
-//     url: z.string().min(2, {
-//       message: "Username must be at least 2 characters.",
-//     }),
-//   })
-
 export const NewLinkModal = ({ children, tags }: Props) => {
-    console.log(tags)
+    const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
+        resolver: zodResolver(createSlugSchema),
+        defaultValues: {
+            url: "",
+            slug: "",
+            description: "",
+        },
+    });
+
+    const onSubmit = async(values: z.infer<typeof createSlugSchema>) => {       
+       await createNewSlug(values);
+    }
+
+    const generateRandomSlug = () => {
+        const randSlug = Math.random().toString(36).substring(7);
+        setValue("slug", randSlug, { shouldValidate: true });
+    }
+
     return (
-        <Dialog.Root>
-            <Dialog.Trigger>{children}</Dialog.Trigger>
-            <Dialog.Content maxWidth="500px">
-                <Dialog.Title>
-                    <Heading size="4" weight="bold" color="gray">Create a link</Heading>
-                </Dialog.Title>
-                <Dialog.Description size="2" mb="4">
-                    Complete the form below to add a new link.
-                </Dialog.Description>
+        <Dialog>
+            <DialogTrigger>{children}</DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Create a new link</DialogTitle>
+                    <DialogDescription>
+                        Complete the form below to add a new link.
+                    </DialogDescription>
+                </DialogHeader>
 
-                <Flex direction="column" gap="5">
-                    <Flex direction="column" gap="1">
-                        <Text weight="medium" size="2" as="label">
-                            Destination URL:
-                        </Text>
+                <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+                    <div className="flex flex-col gap-1">
+                        <label className='font-medium text-sm'>Destination URL:</label>
+                        <Input {...register("url")} placeholder="https://example.com" />
+                        {errors.url && <p className="text-sm text-red-500">{errors.url.message}</p>}
+                    </div>
 
-                        <TextField.Root
-                            // defaultValue="Freja Johnsen"
-                            placeholder="https://'"
-                        />
-                    </Flex>
+                    <div className="flex flex-col gap-1">
+                        <div className='relative'>
+                            <LuLink className='absolute left-3 top-1/2 -translate-y-1/2' size={16} />
+                            <Input {...register("slug")} placeholder="MyL1nk" className="pl-9" />
+                            <Button size="default" variant="ghost" type="button" onClick={generateRandomSlug} className='absolute right-1 top-1/2 -translate-y-1/2 h-8'>
+                                <FaArrowsRotate size={14} />
+                                <span className='font-medium text-sm ml-2'>Random</span>
+                            </Button>
+                        </div>
+                        {errors.slug && <p className="text-sm text-red-500">{errors.slug.message}</p>}
+                    </div>
 
-                    <Flex direction="column" gap="1">
-                        <Box>
-                            <TextField.Root placeholder="MyL1nk" size="2">
-                                <TextField.Slot>
-                                    <LuLink size={16} />
-                                </TextField.Slot>
-                                <TextField.Slot>
-                                    <Button size="default" variant="ghost">
-                                        <FaArrowsRotate size={14} />
-                                        <Text weight="medium" size="2" as="label">
-                                            Ramdom
-                                        </Text>
-                                    </Button>
-                                </TextField.Slot>
-                            </TextField.Root>
-                        </Box>
-                    </Flex>
-
-                    <Flex direction="column" gap="1">
-                        <Text weight="medium" size="2" as="label">
-                            Description (optional):
-                        </Text>
-                        <Box>
-                            <TextArea size="3" placeholder="Enter a description" />
-                        </Box>
-                    </Flex>
+                    <div className="flex flex-col gap-1">
+                        <label className='font-medium text-sm'>Description (optional):</label>
+                        <Textarea {...register("description")} placeholder="Enter a description" />
+                    </div>
 
                     {
                         tags.length > 0
-                            ? <Flex direction="column" gap="1">
-                                <Select.Root>
-                                    <Text weight="medium" size="2" as="label">Add tags to your link:</Text>
-                                    <Select.Trigger placeholder="Select a tag" color="gray" />
-                                    <Select.Content color="gray" variant="solid">
-                                        <Select.Group>
-                                            {
-                                                tags.map((tag) => <Select.Item value={tag.name}>{tag.name}</Select.Item>)
-                                            }
-                                        </Select.Group>
-                                    </Select.Content>
-                                </Select.Root>
-                            </Flex>
-                            : <Box p="4" className='border border-gray-300 rounded-md'>
-                                <Flex direction="row" gap="1" justify="start" align="center">
+                            ? <div className="flex flex-col gap-1">
+                                <label className='font-medium text-sm'>Add tags to your link:</label>
+                               
+                                        <Select>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select a fruit" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    {tags.map((tag) => <SelectItem key={tag.id} value={tag.name}>{tag.name}</SelectItem>)}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                               
+                            </div>
+                            : <div className="p-4 border border-gray-300 rounded-md">
+                                <div className="flex flex-row gap-1 justify-start items-center">
                                     <LuTags size={16} />
-                                    <Text weight="medium" size="2" as="label">
-                                        You don't have any tag created.
-                                    </Text>
-                                </Flex>
-                            </Box>
+                                    <label className='font-medium text-sm'>You don&apos;t have any tag created.</label>
+                                </div>
+                            </div>
                     }
-                </Flex>
 
-                <Flex gap="3" mt="4" justify="end" align="center">
-                    <Dialog.Close>
-                        <Button variant="ghost">
-                            Cancel
-                        </Button>
-                    </Dialog.Close>
-                    <Dialog.Close>
-                        <Button variant="destructive">
+                    <div className="flex gap-3 mt-4 justify-end items-center">
+                        <Button variant="ghost">Cancel</Button>
+                        <Button type="submit">
                             <LuRocket size={16} />
                             Create
                         </Button>
-                    </Dialog.Close>
-                </Flex>
-            </Dialog.Content>
-        </Dialog.Root>
+                    </div>
+                </form>
+            </DialogContent>
+        </Dialog>
     );
 };

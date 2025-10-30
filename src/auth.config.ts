@@ -15,7 +15,7 @@ const config: NextAuthConfig = {
     }),
   ],
   callbacks: {
-    async signIn ({user, profile}) {
+    async signIn ({user}) {
       console.log({user})
       if (!user.email) return false;
       
