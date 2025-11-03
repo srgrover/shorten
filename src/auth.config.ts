@@ -15,20 +15,33 @@ const config: NextAuthConfig = {
     }),
   ],
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) { // user is only available on first sign in
+        console.log("EN JWT",user)
+        try {
+          const responseUser = await getUserByEmail(user);
+          if (responseUser.ok && responseUser.user) {
+            token.id = responseUser.user.id;
+          }
+        } catch (error) {
+            console.error('Error adding id to token: ', error)
+        }
+      }
+      return token;
+    },
+
     async signIn ({user}) {
-      console.log({user})
       if (!user.email) return false;
-      
+
       try {
         const responseUser = await getUserByEmail(user)
         const { ok, user: existingUser } = responseUser;
-        console.log({existingUser})
+
         if (!ok) return false;
 
         if (!existingUser) {
           const createResponse = await createUser(user);
-          const { ok, user: createdUser } = createResponse;
-          console.log({createdUser})
+          const { ok } = createResponse;
 
           if (!ok) return false;
           return true;
@@ -52,8 +65,8 @@ const config: NextAuthConfig = {
     },
 
     async session({ session, token }) {
-      if (session?.user) {
-        session.user.id = token.sub!; 
+      if (session?.user && token.id) {
+        session.user.id = token.id as string;
       }
       return session;
     },
