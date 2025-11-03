@@ -17,7 +17,6 @@ const config: NextAuthConfig = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) { // user is only available on first sign in
-        console.log("EN JWT",user)
         try {
           const responseUser = await getUserByEmail(user);
 
