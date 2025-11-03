@@ -1,7 +1,7 @@
 'use client'
 
 import { login } from "@/actions";
-import { Button } from "@radix-ui/themes";
+import { Button } from "@/components";
 import { useState } from "react";
 import { LuLoader } from "react-icons/lu";
 
@@ -24,10 +24,9 @@ export const ButtonProvider = ({ provider, icon }: Props) => {
         <Button
             color="gray"
             variant="outline"
-            size="2"
+            size="sm"
             onClick={ async() => { await tryToLogin() } }
-            type="button"
-            highContrast>
+            type="button">
             { !loading ? icon : <LuLoader size={20} className="animate-spin" /> }
             Continue with { provider.toWellFormed() }
         </Button>

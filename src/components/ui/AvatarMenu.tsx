@@ -2,10 +2,13 @@
 
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react"
-import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoHomeOutline, IoLogOutOutline, IoSettingsOutline } from "react-icons/io5";
 import { RiDashboardLine } from "react-icons/ri";
 import { Button } from "./button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import Link from "next/link";
+import { LuLoader } from "react-icons/lu";
 
 const menuItems = [
     {
@@ -78,56 +81,49 @@ export const AvatarMenu = () => {
         // </>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">Open</Button>
+                <Button variant="ghost" size="icon" aria-label="Submit">
+                    <Avatar>
+                        <AvatarImage src={user!.image!} alt={user!.name ?? 'Avatar'} />
+                        <AvatarFallback>{user!.name![0]}</AvatarFallback>
+                    </Avatar>
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        Profile
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        Billing
-                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        Settings
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        Keyboard shortcuts
-                        <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
+                <DropdownMenuLabel>{user!.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                    <p className="text-xs text-gray-400">{user!.email}</p></DropdownMenuLabel>
+
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem>Email</DropdownMenuItem>
-                                <DropdownMenuItem>Message</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>More...</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem>
-                        New Team
-                        <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    {
+                        menuItems.map(({ name, icon, href }, index) => (
+                            <DropdownMenuItem key={index}>
+                                <Link href={href} onClick={() => setOpenMenu(false)} className="flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <DropdownMenuShortcut>{icon}</DropdownMenuShortcut>
+                                    <span className="flex items-center self-center">{name}</span>
+                                </Link>
+                            </DropdownMenuItem>
+
+                        ))
+                    }
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>GitHub</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuItem disabled>API</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => tryToSignOut()}>
-                    Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                <DropdownMenuItem dir="left">
+                <button onClick={() => tryToSignOut()} className="text-sm flex w-full cursor-pointer gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                         {
+                             !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
+                         }
+                         <span className="flex items-center self-center">Salir</span>
+                     </button>
                 </DropdownMenuItem>
+                {/* <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => tryToSignOut()}>
+                        <DropdownMenuShortcut>{
+                            !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
+                        }</DropdownMenuShortcut>
+                        <span className="flex items-center self-center">Log out</span>
+                    </DropdownMenuItem>
+                </DropdownMenuGroup> */}
             </DropdownMenuContent>
         </DropdownMenu>
     )
