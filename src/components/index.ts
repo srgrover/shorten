@@ -3,4 +3,5 @@ export * from './ui/DashboardMenu';
 export * from './ui/AvatarMenu';
 export * from "./ui/NewLinkModal";
 
-export * from "./ui/button"
+export * from "./ui/button";
+export * from "./ui/avatar"
