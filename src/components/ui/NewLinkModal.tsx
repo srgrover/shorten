@@ -3,10 +3,10 @@
 
 import { FaArrowsRotate } from 'react-icons/fa6';
 import { LuLink, LuRocket, LuTags } from 'react-icons/lu';
-import type { Slug, Tags } from "@prisma/client";
+import type { Tags } from "@prisma/client";
 import { Button } from './button';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createNewSlug } from '@/actions';
 import {
@@ -28,6 +28,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { createSlugSchema } from '@/schemas';
+import { useState } from 'react';
 
 interface Props {
     children: React.ReactNode
@@ -35,6 +36,8 @@ interface Props {
 }
 
 export const NewLinkModal = ({ children, tags }: Props) => {
+    const [open, setOpen] = useState(false);
+    
     const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
         resolver: zodResolver(createSlugSchema),
         defaultValues: {
@@ -45,7 +48,15 @@ export const NewLinkModal = ({ children, tags }: Props) => {
     });
 
     const onSubmit = async(values: z.infer<typeof createSlugSchema>) => {       
-       await createNewSlug(values);
+       const { ok, message } = await createNewSlug(values);
+
+       if(!ok) {
+        // TODO: Create a snackbar
+        alert(message);
+        return;
+       }
+
+       setOpen(false);
     }
 
     const generateRandomSlug = () => {
@@ -54,7 +65,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -114,8 +125,8 @@ export const NewLinkModal = ({ children, tags }: Props) => {
                     }
 
                     <div className="flex gap-3 mt-4 justify-end items-center">
-                        <Button variant="ghost">Cancel</Button>
-                        <Button type="submit">
+                        <Button onClick={() => setOpen(false)} type='button' variant="ghost" size="sm">Cancel</Button>
+                        <Button type="submit" size="sm">
                             <LuRocket size={16} />
                             Create
                         </Button>
