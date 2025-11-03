@@ -20,6 +20,7 @@ const config: NextAuthConfig = {
         console.log("EN JWT",user)
         try {
           const responseUser = await getUserByEmail(user);
+
           if (responseUser.ok && responseUser.user) {
             token.id = responseUser.user.id;
           }

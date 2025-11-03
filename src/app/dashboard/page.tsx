@@ -15,10 +15,6 @@ export default async function DashboardPage() {
 
     const { slugs } = await getSlugsByUserId();
 
-    console.log(slugs)
-
-    // if (slugs == null || slugs == undefined || slugs.length == 0) slugs = seedSlugs
-
     return (
         <>
             <div className="flex flex-col gap-8">

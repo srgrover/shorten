@@ -2,7 +2,7 @@
 'use client';
 
 import { FaArrowsRotate } from 'react-icons/fa6';
-import { LuLink, LuRocket, LuTags } from 'react-icons/lu';
+import { LuLink, LuLoader, LuRocket, LuTags } from 'react-icons/lu';
 import type { Tags } from "@prisma/client";
 import { Button } from './button';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +37,8 @@ interface Props {
 
 export const NewLinkModal = ({ children, tags }: Props) => {
     const [open, setOpen] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+
     const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
         resolver: zodResolver(createSlugSchema),
         defaultValues: {
@@ -47,12 +48,14 @@ export const NewLinkModal = ({ children, tags }: Props) => {
         },
     });
 
-    const onSubmit = async(values: z.infer<typeof createSlugSchema>) => {       
+    const onSubmit = async(values: z.infer<typeof createSlugSchema>) => {      
+        setLoading(true);
        const { ok, message } = await createNewSlug(values);
 
        if(!ok) {
         // TODO: Create a snackbar
         alert(message);
+        setLoading(false);
         return;
        }
 
@@ -125,10 +128,14 @@ export const NewLinkModal = ({ children, tags }: Props) => {
                     }
 
                     <div className="flex gap-3 mt-4 justify-end items-center">
-                        <Button onClick={() => setOpen(false)} type='button' variant="ghost" size="sm">Cancel</Button>
-                        <Button type="submit" size="sm">
-                            <LuRocket size={16} />
-                            Create
+                        <Button onClick={() => setOpen(false)} type='button' disabled={loading} variant="ghost" size="sm">Cancel</Button>
+                        <Button type="submit" size="sm" disabled={loading}>
+                            {
+                                loading
+                                ? <LuLoader size={15} className="animate-spin" />
+                                : <><LuRocket size={16} /> Create</>
+                            }
+                            
                         </Button>
                     </div>
                 </form>

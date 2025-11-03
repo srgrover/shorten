@@ -5,10 +5,11 @@ import prisma from "@/lib/prisma";
 import { checkDuplicateSlug } from "./check-duplicate-slug";
 import z from "zod";
 import { createSlugSchema } from "@/schemas";
+import { revalidatePath } from "next/cache";
 
 export const createNewSlug = async (values: z.infer<typeof createSlugSchema>) => {
   const session = await auth();
-
+  
   if (!session?.user) {
     return {
       ok: false,
@@ -23,9 +24,12 @@ export const createNewSlug = async (values: z.infer<typeof createSlugSchema>) =>
 
   const slugInsert = await prisma.slug.create({
     data: {
-      ...values
+      ...values,
+      userId: session.user.id,
     }
   });
+
+  revalidatePath("/dashboard");
 
   return {
     ok: true,
