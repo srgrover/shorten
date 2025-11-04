@@ -12,3 +12,9 @@ export const createSlugSchema = z.object({
         .max(120, { message: "The description must be less than 120 characters." })
         .optional()
 });
+
+export const deleteSlugSchema = z.object({
+    slug: z
+      .string()
+      .min(5, "slug must be at least 5 characters.")
+  })
