@@ -4,7 +4,7 @@ import { TopMenu } from "@/components";
 import { Providers } from "@/components/providers/Providers";
 import { auth } from "@/auth.config";
 import "./globals.css";
-// import "@radix-ui/themes/styles.css";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +35,7 @@ export default async function RootLayout({
           <Providers session={session}>
             <TopMenu />
             {children}
+            <Toaster />
           </Providers>
         </body>
     </html>
