@@ -19,11 +19,7 @@ export const getSlugsByUserId = async () => {
     },
     orderBy: {
       createdAt: "desc",
-    },
-    // include: {
-    //   user: true,
-    // },
-
+    }
   });
 
   return {

@@ -1,6 +1,7 @@
 import { Slug } from "@/interfaces";
 import { IoMdStats } from "react-icons/io";
-import { IoCopyOutline, IoSettingsOutline, IoTrashOutline } from "react-icons/io5";
+import { IoCopyOutline, IoSettingsOutline } from "react-icons/io5";
+import { DeleteButtonModal } from "./DeleteButtonModal";
 
 interface Props {
     slugs: Slug[];
@@ -30,9 +31,7 @@ export const DashboardTable = ({ slugs }: Props) => {
                                     <button className="cursor-pointer">
                                         <IoSettingsOutline size={15} />
                                     </button>
-                                    <button className="cursor-pointer">
-                                        <IoTrashOutline size={15} />
-                                    </button>
+                                    <DeleteButtonModal slug={ slug } />
                                 </div>
                             </div>
                         </div>
