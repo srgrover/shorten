@@ -17,7 +17,9 @@ export const seedSlugs: Slug[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         clicks: 36,
-        userId: '1'
+        userId: '1',
+        description: "Una descripcion",
+        tags: ['tag1', 'tag2']
     },
     {
         id: crypto.randomUUID(),
@@ -26,7 +28,9 @@ export const seedSlugs: Slug[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         clicks: 36,
-        userId: '1'
+        userId: '1',
+        description: "Una descripcion",
+        tags: ['tag1', 'tag2']
     },
     {
         id: crypto.randomUUID(),
@@ -35,7 +39,9 @@ export const seedSlugs: Slug[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         clicks: 36,
-        userId: '1'
+        userId: '1',
+        description: "Una descripcion",
+        tags: ['tag1', 'tag2']
     },
     {
         id: crypto.randomUUID(),
@@ -44,6 +50,8 @@ export const seedSlugs: Slug[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         clicks: 36,
-        userId: '1'
+        userId: '1',
+        description: "Una descripcion",
+        tags: ['tag1', 'tag2']
     },
 ]

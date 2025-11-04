@@ -31,7 +31,7 @@ interface Props {
 export function DeleteButtonModal({ slug }: Props) {
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof deleteSlugSchema>>({
+  const { register, handleSubmit, formState: {} } = useForm<z.infer<typeof deleteSlugSchema>>({
     resolver: zodResolver(deleteSlugSchema),
     defaultValues: {
       slug: "",
