@@ -39,7 +39,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
         resolver: zodResolver(createSlugSchema),
         defaultValues: {
             url: "",
@@ -132,10 +132,9 @@ export const NewLinkModal = ({ children, tags }: Props) => {
                         <Button type="submit" size="sm" disabled={loading}>
                             {
                                 loading
-                                ? <LuLoader size={15} className="animate-spin" />
+                                ? <><LuLoader size={15} className="animate-spin" /> Creating</>
                                 : <><LuRocket size={16} /> Create</>
                             }
-                            
                         </Button>
                     </div>
                 </form>
