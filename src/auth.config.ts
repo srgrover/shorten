@@ -16,7 +16,7 @@ const config: NextAuthConfig = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) { // user is only available on first sign in
+      if (user) {
         try {
           const responseUser = await getUserByEmail(user);
 
@@ -54,13 +54,8 @@ const config: NextAuthConfig = {
     },
 
     async redirect({ url, baseUrl }) {
-      // Permite redirecciones relativas
       if (url.startsWith('/')) return `${baseUrl}${url}`;
-
-      // Permite redirecciones a otros dominios si vienen en la URL
       if (new URL(url).origin === baseUrl) return url;
-      
-      // Si no es ninguno de los anteriores (ej. primer login), redirige a dashboard
       return baseUrl + '/dashboard';
     },
 
