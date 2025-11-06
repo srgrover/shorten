@@ -59,23 +59,23 @@ export const AvatarMenu = () => {
                 <DropdownMenuGroup>
                     {
                         menuItems.map(({ name, icon, href }, index) => (
-                            <DropdownMenuItem key={index}>
-                                <Link href={href} onClick={() => setOpenMenu(false)} className="flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    <DropdownMenuShortcut>{icon}</DropdownMenuShortcut>
+                            <DropdownMenuItem asChild key={index}>
+                                <Link href={href} onClick={() => setOpenMenu(false)} className="text-sm cursor-pointer flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    {icon}
                                     <span className="flex items-center self-center">{name}</span>
+                                    <DropdownMenuShortcut></DropdownMenuShortcut>
                                 </Link>
                             </DropdownMenuItem>
                         ))
                     }
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem dir="left">
-                    <button onClick={() => tryToSignOut()} className="text-sm flex w-full cursor-pointer gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <DropdownMenuItem onClick={() => tryToSignOut()} className="text-sm cursor-pointer flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100">
                         {
                             !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
                         }
                         <span className="flex items-center self-center">Salir</span>
-                    </button>
+                        <DropdownMenuShortcut></DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

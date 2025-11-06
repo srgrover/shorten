@@ -12,7 +12,7 @@ export const NavComponent = () => {
     const { data: session } = useSession();
 
     return (
-        <nav className=" bg-white w-full flex relative justify-between items-center mx-auto px-20 h-20">
+        <nav className="sticky bg-white w-full flex top-0 z-50 justify-between items-center mx-auto px-20 h-20">
             <div className="inline-flex">
                 <Link href="/">
                     <div className="hidden md:block">
