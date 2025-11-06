@@ -18,15 +18,14 @@ export const ButtonProvider = ({ provider, icon }: Props) => {
         await login(provider)
     }
 
-    console.log('PROVIDER',provider)
-
     return (
         <Button
             color="gray"
             variant="outline"
             size="sm"
             onClick={ async() => { await tryToLogin() } }
-            type="button">
+            type="button"
+            disabled={loading}>
             { !loading ? icon : <LuLoader size={20} className="animate-spin" /> }
             Continue with { provider.toWellFormed() }
         </Button>
