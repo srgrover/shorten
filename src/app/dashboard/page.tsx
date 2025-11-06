@@ -1,5 +1,5 @@
 import { getSlugsByUserId } from "@/actions/slugs/get-slugs-by-user-id";
-import { IoCubeOutline, IoSearch } from "react-icons/io5";
+import { IoCubeOutline } from "react-icons/io5";
 import { auth } from "@/auth.config";
 import { redirect } from "next/navigation";
 import { DashboardTable } from "@/components/ui/DashboardTable";
@@ -8,65 +8,58 @@ import { BiPlus } from "react-icons/bi";
 import { TbTagStarred } from "react-icons/tb";
 import { LuWandSparkles } from "react-icons/lu";
 import { Button, NewLinkModal } from "@/components";
+import { SearchLinkInput } from "@/components/ui/SearchLinkInput";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams?: { search?: string } }) {
     const session = await auth();
     if (!session?.user) redirect('/auth/login')
 
-    const { slugs } = await getSlugsByUserId();
+    let { slugs } = await getSlugsByUserId();
+
+    const searchParam = searchParams?.search
+    const filteredLinks = slugs?.filter((s) => {
+        return !searchParam || (s.url.includes(searchParam || '') || s.slug.includes(searchParam || ''))
+    });
 
     return (
-        <>
-            <div className="flex flex-col gap-1">
-                <div className="flex justify-between">
-                    <div className="relative w-full md:w-72 md:max-w-72">
-                        <IoSearch size={16} className="lucide lucide-search absolute left-2 top-1/2 -translate-y-1/2 transform text-neutral-400" />
-                        <input className="flex h-9 w-full rounded-md border border-neutral-300 bg-transparent px-3 py-1 
-                                    text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium 
-                                    placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 
-                                    focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 
-                                    dark:border-neutral-800 dark:placeholder:text-neutral-400 
-                                    dark:focus-visible:ring-neutral-700 pl-8"
-                            autoComplete="off"
-                            placeholder="Search links"
-                            type="search" />
-                    </div>
+        <div className="w-full duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
+            <div className="flex justify-between">
+                <SearchLinkInput />
 
-                    <div className="flex gap-2 items-center justify-end">
-                        <Button size="default" color="gray" variant="outline">
-                            <IoCubeOutline size={16} />
-                            <span className="flex self-center">{slugs!.length || 0} / 15</span>
+                <div className="flex gap-2 items-center justify-end">
+                    <Button size="default" color="gray" variant="outline">
+                        <IoCubeOutline size={16} />
+                        <span className="flex self-center">{slugs!.length || 0} / 15</span>
+                    </Button>
+
+                    <Button size="default" color="gray" variant="outline">
+                        <TbTagStarred size={16} />
+                        <span className="flex self-center">Select a tag</span>
+                    </Button>
+
+                    <NewLinkModal tags={[]}>
+                        <Button size="default" color="gray" variant="default">
+                            <BiPlus size={16} />
+                            Create Link
                         </Button>
-
-                        <Button size="default" color="gray" variant="outline">
-                            <TbTagStarred size={16} />
-                            <span className="flex self-center">Select a tag</span>
-                        </Button>
-
-                        <NewLinkModal tags={[]}>
-                            <Button size="default" color="gray" variant="default">
-                                <BiPlus size={16} />
-                                Create Link
-                            </Button>
-                        </NewLinkModal>
-                    </div>
+                    </NewLinkModal>
                 </div>
+            </div>
 
-                {
-                    slugs!.length > 0
-                        ? <DashboardTable slugs={slugs as Slug[] || []} />
-                        : <div className="flex flex-col gap-4 items-center justify-center">
-                            <LuWandSparkles size={35} className="text-slate-700" />
-                            <span className="text-gray-700">No links found</span>
-                            <NewLinkModal tags={[]}>
+            {
+                filteredLinks!.length > 0
+                    ? <DashboardTable slugs={filteredLinks as Slug[] || []} />
+                    : <div className="flex flex-col gap-4 items-center justify-center">
+                        <LuWandSparkles size={35} className="text-slate-700" />
+                        <span className="text-gray-700">No links found</span>
+                        <NewLinkModal tags={[]}>
                             <Button size="default" color="gray" variant="outline">
                                 <BiPlus size={16} />
                                 Create a new Link
                             </Button>
                         </NewLinkModal>
-                        </div>
-                }
-            </div>
-        </>
+                    </div>
+            }
+        </div>
     )
 }
