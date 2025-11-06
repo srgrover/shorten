@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from "@/auth.config";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import z from "zod";
 import { deleteSlugSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";

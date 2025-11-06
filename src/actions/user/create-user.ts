@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { User } from "next-auth";
 
 export const createUser = async (user: User) => {
