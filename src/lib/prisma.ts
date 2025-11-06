@@ -2,20 +2,15 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { Pool } from '@neondatabase/serverless';
 
-const prismaClientSingleton = () => {
-  const pool = new Pool({ connectionString: process.env.POSTGRES_PRISMA_URL! });
-  const adapter = new PrismaNeon(pool);
-  return new PrismaClient({ adapter });
-};
+declare global {
+  var prisma: PrismaClient | undefined;
+}
 
-type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+const pool = new Pool({ connectionString: process.env.POSTGRES_PRISMA_URL });
+const adapter = new PrismaNeon(pool);
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClientSingleton | undefined;
-};
+export const prisma = global.prisma || new PrismaClient({ adapter });
 
-const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
-
-export default prisma;
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma;
+}
