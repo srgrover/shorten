@@ -5,6 +5,7 @@ import { AvatarMenu } from "./AvatarMenu"
 import { useSession } from "next-auth/react"
 import { BiLinkAlt } from "react-icons/bi"
 import { FaGithub } from "react-icons/fa6"
+import { Badge } from "./badge"
 
 export const TopMenu = () => {
     const { data: session } = useSession();
@@ -18,6 +19,7 @@ export const TopMenu = () => {
                             <span className="text-2xl flex gap-2 items-center font-semibold text-gray-700">
                                 <BiLinkAlt size={25} className="bg-gray-700 p-1 rounded text-white" />
                                 slgs
+                                <Badge variant="secondary">Alpha</Badge>
                             </span>
                         </div>
                     </Link>
