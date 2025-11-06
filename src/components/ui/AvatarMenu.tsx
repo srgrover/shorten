@@ -42,7 +42,7 @@ export const AvatarMenu = () => {
     }
 
     return (
-        <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
+        <DropdownMenu open={openMenu} onOpenChange={setOpenMenu} modal={false}>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Submit">
                     <Avatar>
@@ -55,7 +55,6 @@ export const AvatarMenu = () => {
                 <DropdownMenuLabel>{user!.name}</DropdownMenuLabel>
                 <DropdownMenuLabel>
                     <p className="text-xs text-gray-400">{user!.email}</p></DropdownMenuLabel>
-
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     {

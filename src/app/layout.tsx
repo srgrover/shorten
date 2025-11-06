@@ -32,11 +32,13 @@ export default async function RootLayout({
   return (
     <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <main className="content-wrapper">
           <Providers session={session}>
-            <TopMenu />
-            {children}
-            <Toaster />
+              <TopMenu />
+              {children}
+              <Toaster />
           </Providers>
+            </main>
         </body>
     </html>
   );
