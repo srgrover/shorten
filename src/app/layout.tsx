@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { TopMenu } from "@/components";
+import { FooterComponent, NavComponent } from "@/components";
 import { Providers } from "@/components/providers/Providers";
 import { auth } from "@/auth.config";
 import "./globals.css";
@@ -31,15 +31,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-            <main className="content-wrapper">
-          <Providers session={session}>
-              <TopMenu />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Providers session={session}>
+          <main className="content-wrapper">
+            <NavComponent />
+            <div>
               {children}
-              <Toaster />
-          </Providers>
-            </main>
-        </body>
+            </div>
+            <FooterComponent />
+          </main>
+          <Toaster />
+        </Providers>
+      </body>
     </html>
   );
 }
