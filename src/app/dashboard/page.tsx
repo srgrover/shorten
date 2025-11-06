@@ -17,7 +17,7 @@ export default async function DashboardPage() {
 
     return (
         <>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-1">
                 <div className="flex justify-between">
                     <div className="relative w-full md:w-72 md:max-w-72">
                         <IoSearch size={16} className="lucide lucide-search absolute left-2 top-1/2 -translate-y-1/2 transform text-neutral-400" />
