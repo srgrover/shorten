@@ -17,3 +17,6 @@ export * from "./ui/select";
 export * from "./ui/sonner";
 export * from "./ui/textarea";
 export * from "./ui/badge";
+export * from "./ui/item";
+export * from "./ui/separator";
+export * from "./ui/field";
