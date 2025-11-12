@@ -22,7 +22,7 @@ export const DashboardMenu = () => {
     const pathName = usePathname();
 
     return (
-        <nav className="fixed z-50 bg-white w-full flex gap-9 border-b border-gray-200  justify-start items-center mx-auto px-20">
+        <nav className="max-w-[1500px] flex gap-9 border-gray-200 justify-start items-center px-20">
             {
                 menuItems.map((item: MenuItem) => (
                     <Link 

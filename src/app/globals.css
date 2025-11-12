@@ -57,8 +57,9 @@
     @apply bg-background text-foreground;
   }
   .content-wrapper {
-    max-width: 1500px;
-    margin: 0 auto;
+    /* max-width: 1500px; */
+    /* margin: 0 auto; */
+    width: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 100dvh;
