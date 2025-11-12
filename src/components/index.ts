@@ -5,6 +5,8 @@ export * from "./ui/DeleteButtonModal";
 export * from "./ui/NewLinkModal";
 export * from './ui/FooterComponent'
 export * from './ui/NavComponent'
+export * from './ui/SettingsForm'
+
 
 //Shadcn
 export * from "./ui/avatar";

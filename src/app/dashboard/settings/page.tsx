@@ -1,61 +1,27 @@
-import { ItemContent, ItemTitle, ItemDescription, ItemActions, Button, Item, Field, FieldGroup, FieldDescription, FieldLabel, FieldLegend, FieldSeparator, FieldSet, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea, ItemMedia } from "@/components";
-import { Download, InfoIcon, SaveIcon, Trash, Trash2 } from "lucide-react";
+import { getUserByEmail } from "@/actions";
+import { auth } from "@/auth.config";
+import { ItemContent, ItemTitle, ItemDescription, ItemActions, Button, Item, FieldGroup, FieldDescription, FieldLegend, FieldSet, ItemMedia, SettingsForm } from "@/components";
+import { Download, Trash, Trash2 } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Settings - Dashboard",
 };
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+    const session = await auth();
+    const {ok, message, user} = await getUserByEmail(session?.user!);
+    
+    if(!ok){
+        //TODO: Create a snackbar
+        alert(message);
+        return;
+    }
+    
     return (
-        <section className="grid grid-cols-1 gap-4 w-full py-[50px]">
+        <section className="grid grid-cols-1 gap-4 w-full py-[50px] duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
             <div className="flex w-full flex-col gap-6 border p-4 rounded-md">
-                <form>
-                    <FieldGroup>
-                        <FieldSet>
-                            <FieldLegend>
-                                <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">General profile</h2>
-                            </FieldLegend>
-                            <FieldDescription>
-                                Update your personal information
-                            </FieldDescription>
-                            <FieldGroup>
-                                <Field>
-                                    <FieldLabel htmlFor="checkout-7j9-card-name-43j">
-                                        Name
-                                    </FieldLabel>
-                                    <Input
-                                        id="checkout-7j9-card-name-43j"
-                                        placeholder="Evil Rabbit"
-                                        required
-                                    />
-                                </Field>
-                                <Field>
-                                    <FieldLabel htmlFor="checkout-7j9-card-number-uw1">
-                                        Email
-                                    </FieldLabel>
-                                    <Input
-                                        id="checkout-7j9-card-number-uw1"
-                                        placeholder="1234 5678 9012 3456"
-                                        disabled
-                                        required
-                                    />
-                                    <FieldDescription className="flex items-center gap-2 align-middle">
-                                        <InfoIcon size={12} />
-                                        This information is managed by your OAuth provider.
-                                    </FieldDescription>
-                                </Field>
-                            </FieldGroup>
-                        </FieldSet>
-
-                        <Field orientation="horizontal" >
-                            <Button type="submit">
-                                <SaveIcon size={10} />
-                                Save
-                            </Button>
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <SettingsForm user={user!} />
             </div>
 
             <FieldGroup className="flex w-full flex-col gap-6 border p-4 rounded-md">
@@ -87,10 +53,10 @@ export default function SettingsPage() {
                     </ItemActions>
                 </Item>
 
-                <Item variant="outline">
-                <ItemMedia variant="icon">
-                    <Trash2 size={12} />
-                </ItemMedia>
+                <Item variant="outline" className="align-middle">
+                    <ItemMedia variant="icon" className="align-middle">
+                        <Trash2 size={12} />
+                    </ItemMedia>
                     <ItemContent>
                         <ItemTitle>
                             Delete account

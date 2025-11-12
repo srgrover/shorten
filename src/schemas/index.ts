@@ -18,3 +18,7 @@ export const deleteSlugSchema = z.object({
       .string()
       .min(5, "slug must be at least 5 characters.")
   })
+
+  export const updateUserDataSchema = z.object({
+    name: z.string().min(3, "Name must be at least 3 characters."),
+});
