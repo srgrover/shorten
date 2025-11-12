@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select"
 import { createSlugSchema } from '@/schemas';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface Props {
     children: React.ReactNode
@@ -53,8 +54,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
        const { ok, message } = await createNewSlug(values);
 
        if(!ok) {
-        // TODO: Create a snackbar
-        alert(message);
+        toast.error(message)
         setLoading(false);
         return;
        }
