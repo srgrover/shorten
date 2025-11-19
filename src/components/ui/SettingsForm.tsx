@@ -22,7 +22,7 @@ export const SettingsForm = ({ user }: Props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<z.infer<typeof updateUserDataSchema>>({
+    const { register, handleSubmit } = useForm<z.infer<typeof updateUserDataSchema>>({
         resolver: zodResolver(updateUserDataSchema),
         defaultValues: {
             name: user?.name || '',

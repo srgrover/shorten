@@ -6,6 +6,11 @@ export * from "./ui/NewLinkModal";
 export * from './ui/FooterComponent'
 export * from './ui/NavComponent'
 export * from './ui/SettingsForm'
+export * from './ui/TagsButton'
+export * from './ui/NewTagModal'
+export * from './ui/SearchLinkInput'
+
+
 
 
 //Shadcn
@@ -22,3 +27,4 @@ export * from "./ui/badge";
 export * from "./ui/item";
 export * from "./ui/separator";
 export * from "./ui/field";
+export * from "./ui/popover";

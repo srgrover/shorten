@@ -3,7 +3,7 @@
 
 import { FaArrowsRotate } from 'react-icons/fa6';
 import { LuLink, LuLoader, LuRocket, LuTags } from 'react-icons/lu';
-import type { Tags } from "@prisma/client";
+import type { Tag } from "@prisma/client";
 import { Button } from './button';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -33,7 +33,7 @@ import { toast } from 'sonner';
 
 interface Props {
     children: React.ReactNode
-    tags: Tags[];
+    tags: Tag[];
 }
 
 export const NewLinkModal = ({ children, tags }: Props) => {
