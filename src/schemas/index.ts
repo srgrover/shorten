@@ -22,3 +22,10 @@ export const deleteSlugSchema = z.object({
   export const updateUserDataSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters."),
 });
+
+export const createTagSchema = z.object({
+    name: z
+        .string()
+        .min(2, { message: "Name tag must be at least 2 characters." })
+        .max(15, { message: "The name must be less than 15 characters." })
+});

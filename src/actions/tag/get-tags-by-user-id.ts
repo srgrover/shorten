@@ -3,22 +3,19 @@
 import { auth } from "@/auth.config";
 import prisma from "@/lib/prisma";
 
-export const getSlugsByUserId = async () => {
+export const getTagsByUserId = async (userId?: string) => {
   const session = await auth();
 
   if (!session?.user) {
     return {
       ok: false,
-      message: "Debe iniciar sesión para poder ver sus órdenes",
+      message: "You must be logged in to view your tags",
     };
   }
 
-  const slugs = await prisma.slug.findMany({
+  const tags = await prisma.tag.findMany({
     where: {
-      userId: session.user.id,
-    },
-    include: {
-      Tags: true,
+      creatorId: userId !== undefined ? userId : session.user.id,
     },
     orderBy: {
       createdAt: "desc",
@@ -27,6 +24,6 @@ export const getSlugsByUserId = async () => {
 
   return {
     ok: true,
-    slugs: slugs || [],
+    tags: tags || [],
   }
 }
