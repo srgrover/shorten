@@ -42,3 +42,8 @@ next-env.d.ts
 
 # postgres
 /postgres/
+
+# vscode
+.idx/
+.vscode/*
+.vscode/settings.json
