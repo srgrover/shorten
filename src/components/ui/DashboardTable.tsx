@@ -14,10 +14,10 @@ export const DashboardTable = ({ slugs }: Props) => {
                 slugs.map(({ slug, url, createdAt, clicks }) => (
                     <div key={slug} className="p-3 rounded bg-white border border-gray-200">
                         <div className="flex justify-between">
-                            <p className="text-xl font-bold">
-                                <span className="font-light text-gray-400">/</span>
+                            <a href={`/${slug}`} target="_blank" rel="noopener noreferrer" className="block space-x-[2px] font-medium transition-opacity duration-75 hover:opacity-100">
+                                <span className="text-sm opacity-30!">/</span>
                                 {slug}
-                            </p>
+                            </a>
                             <div className="flex gap-2 items-center justify-end">
                                 <span className="cursor-default items-center space-x-1 text-xs hidden border-r border-neutral-200 pr-2 md:flex">
                                     <IoMdStats size={14} />
@@ -25,10 +25,10 @@ export const DashboardTable = ({ slugs }: Props) => {
                                 </span>
 
                                 <div className="flex gap-3 items-center justify-end">
-                                    <button className="cursor-pointer">
+                                    <button className="cursor-pointer hover:text-black/50 transition-all duration-75">
                                         <IoCopyOutline size={15} />
                                     </button>
-                                    <button className="cursor-pointer">
+                                    <button className="cursor-pointer hover:text-black/50 transition-all duration-75">
                                         <IoSettingsOutline size={15} />
                                     </button>
                                     <DeleteButtonModal slug={ slug } />

@@ -21,7 +21,7 @@ import { deleteSlugSchema } from "@/schemas"
 import { IoTrashOutline } from "react-icons/io5"
 import { Trash } from "lucide-react"
 import { useState } from "react"
-import { LuLoader } from "react-icons/lu"
+import { LuLoader, LuTrash } from "react-icons/lu"
 import { deleteSlug } from "@/actions"
 
 interface Props {
@@ -59,8 +59,8 @@ export function DeleteButtonModal({ slug }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="cursor-pointer">
-          <IoTrashOutline size="15" />
+        <button className="cursor-pointer hover:text-black/50 transition-all duration-75">
+          <LuTrash size="15" />
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

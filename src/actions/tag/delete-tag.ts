@@ -19,7 +19,7 @@ export const deleteTag = async (tagId: string) => {
   if (!tag) return { ok: false, message: 'Tag not found'}
   if (tag.creatorId !== session.user.id) return { ok: false, message: 'You are not the creator of this tag'}
 
-  const slugDeleted = await prisma.tag.delete({
+  const tagDeleted = await prisma.tag.delete({
     where: {
       id: tagId,
       creatorId: session.user.id
@@ -30,6 +30,6 @@ export const deleteTag = async (tagId: string) => {
 
   return {
     ok: true,
-    slug: slugDeleted,
+    tag: tagDeleted,
   }
 }
