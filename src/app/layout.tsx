@@ -33,13 +33,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers session={session}>
-          <main className="content-wrapper">
             <NavComponent />
-            <div>
-              {children}
-            </div>
+            <main className="flex w-full pl-0 pr-0 px-0! pb-3 lg:px-4 sticky top-0 z-40 bg-white dark:bg-neutral-900" style={{ paddingLeft: 0, paddingRight: 0 }}>
+              { children }
+            </main>
             <FooterComponent />
-          </main>
           <Toaster />
         </Providers>
       </body>

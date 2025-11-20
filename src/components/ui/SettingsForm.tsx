@@ -89,7 +89,7 @@ export const SettingsForm = ({ user }: Props) => {
                 </FieldSet>
 
                 <Field orientation="horizontal" >
-                    <Button type="submit" className='min-w-28' disabled={loading}>
+                    <Button type="submit" size='sm' className='min-w-28' disabled={loading}>
                         {loading 
                         ? <>
                             <LuLoader size={15} className="animate-spin" />

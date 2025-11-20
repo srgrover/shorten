@@ -6,9 +6,9 @@ export default function DashboardLayout({ children }: Readonly<{
     return (
         <>
             <DashboardMenu />
-            <div className="px-20 py-4">
+            <section className="container my-[15px] flex w-full items-center">
                 { children }
-            </div>
+            </section>
         </>
     );
   }

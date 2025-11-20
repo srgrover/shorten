@@ -69,7 +69,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>{children}</DialogTrigger>
+            <DialogTrigger asChild>{ children }</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create a new link</DialogTitle>

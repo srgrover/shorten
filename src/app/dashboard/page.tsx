@@ -28,9 +28,8 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
         return searchFilter && tagFilter;
     });
 
-
     return (
-        <div className="w-full my-[50px] duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
+        <div className="w-full my-[60px] duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
             <div className="flex justify-between">
                 <SearchLinkInput />
 
