@@ -6,9 +6,9 @@ import prisma from "@/lib/prisma";
 // import z from "zod";
 // import { createSlugSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
-import { Slug } from "@prisma/client";
+import { Slug } from "@/interfaces";
 
-export const updateSlug = async (slug: Slug) => {
+export const updateSlug = async (updated: Slug) => {
   const session = await auth();
   
   if (!session?.user) {
@@ -18,23 +18,32 @@ export const updateSlug = async (slug: Slug) => {
     };
   }
 
+  // TODO: Do this when the slug short link was changed
+  // const { slug } = values;
   // const {ok, duplicate} = await checkDuplicateSlug(slug)
   // if (!ok) return { ok: false, message: 'Something went wrong checking slug'}
   // if (duplicate) return { ok: false, message: 'Slug already exists'}
 
-  const slugUpdated = await prisma.slug.update({
-    where: {
-      id: slug.id
-    },
-    data: {
-      ...slug,
+  try {
+    const slugUpdated = await prisma.slug.update({
+      where: {
+        id: updated.id
+      },
+      data: {
+        ...updated,
+      }
+    });
+
+    revalidatePath("/dashboard");
+  
+    return {
+      ok: true,
+      slug: slugUpdated,
     }
-  });
-
-  revalidatePath("/dashboard");
-
-  return {
-    ok: true,
-    slug: slugUpdated,
+  } catch (ex) {
+    return {
+      ok: false,
+      message: "Something went wrong updating the slug. Please try again",
+    };
   }
 }

@@ -30,6 +30,7 @@ import {
 import { createSlugSchema } from '@/schemas';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { SelectTag } from './SelectTag';
 
 interface Props {
     children: React.ReactNode
@@ -39,6 +40,22 @@ interface Props {
 export const NewLinkModal = ({ children, tags }: Props) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [tagsSelected, setTagsSelected] = useState([] as Tag[]);
+    const [selectedValue, setSelectedValue] = useState('');
+
+    const handleSelectTag = (value: string) => {
+        setSelectedValue(value);
+        const tag = tags.find(t => t.name === value);
+        if (!tag) return;
+        
+        const noduplicates = new Set([...tagsSelected, tag]);
+        setTagsSelected(Array.from(noduplicates));
+    }
+
+    const handleRemoveTag = (tag: Tag) => {
+        if (tag.name === selectedValue) setSelectedValue('');
+        setTagsSelected(tagsSelected.filter(t => t.id !== tag.id))
+    }
 
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
         resolver: zodResolver(createSlugSchema),
@@ -49,17 +66,17 @@ export const NewLinkModal = ({ children, tags }: Props) => {
         },
     });
 
-    const onSubmit = async(values: z.infer<typeof createSlugSchema>) => {      
+    const onSubmit = async (values: z.infer<typeof createSlugSchema>) => {
         setLoading(true);
-       const { ok, message } = await createNewSlug(values);
+        const { ok, message } = await createNewSlug(values, tagsSelected);
 
-       if(!ok) {
-        toast.error(message)
-        setLoading(false);
-        return;
-       }
+        if (!ok) {
+            toast.error(message)
+            setLoading(false);
+            return;
+        }
 
-       setOpen(false);
+        setOpen(false);
     }
 
     const generateRandomSlug = () => {
@@ -69,7 +86,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>{ children }</DialogTrigger>
+            <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create a new link</DialogTitle>
@@ -80,12 +97,13 @@ export const NewLinkModal = ({ children, tags }: Props) => {
 
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
                     <div className="flex flex-col gap-1">
-                        <label className='font-medium text-sm'>Destination URL:</label>
+                        <label className='font-medium text-sm'>Destination URL*</label>
                         <Input {...register("url")} placeholder="https://example.com" />
                         {errors.url && <p className="text-sm text-red-500">{errors.url.message}</p>}
                     </div>
 
                     <div className="flex flex-col gap-1">
+                        <label className='font-medium text-sm'>Short link*:</label>
                         <div className='relative'>
                             <LuLink className='absolute left-3 top-1/2 -translate-y-1/2' size={16} />
                             <Input {...register("slug")} placeholder="MyL1nk" className="pl-9" />
@@ -106,18 +124,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
                         tags.length > 0
                             ? <div className="flex flex-col gap-1">
                                 <label className='font-medium text-sm'>Add tags to your link:</label>
-                               
-                                        <Select>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a fruit" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    {tags.map((tag) => <SelectItem key={tag.id} value={tag.name}>{tag.name}</SelectItem>)}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                               
+                                <SelectTag tags={ tags } selectedValue={ selectedValue } tagsSelected={ tagsSelected } handleSelectTag={ handleSelectTag } handleRemoveTag={ handleRemoveTag } />
                             </div>
                             : <div className="p-4 border border-gray-300 rounded-md">
                                 <div className="flex flex-row gap-1 justify-start items-center">
@@ -132,8 +139,8 @@ export const NewLinkModal = ({ children, tags }: Props) => {
                         <Button type="submit" size="sm" disabled={loading}>
                             {
                                 loading
-                                ? <><LuLoader size={15} className="animate-spin" /> Creating</>
-                                : <><LuRocket size={16} /> Create</>
+                                    ? <><LuLoader size={15} className="animate-spin" /> Creating</>
+                                    : <><LuRocket size={16} /> Create</>
                             }
                         </Button>
                     </div>

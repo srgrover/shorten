@@ -40,7 +40,6 @@ export function DeleteButtonModal({ slug }: Props) {
 
   const onSubmit = async(data: z.infer<typeof deleteSlugSchema>) => {
     setLoading(true);
-    console.log(data);
     
     if (data.slug !== slug) {
       toast.error("The slug does not match.");
@@ -59,7 +58,7 @@ export function DeleteButtonModal({ slug }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="cursor-pointer hover:text-black/50 transition-all duration-75">
+        <button className="cursor-pointer hover:text-red-500 transition-all duration-75">
           <LuTrash size="15" />
         </button>
       </DialogTrigger>
@@ -99,7 +98,7 @@ export function DeleteButtonModal({ slug }: Props) {
               {
                   loading
                   ? <><LuLoader size={15} className="animate-spin" /> Deleting</>
-                  : <><Trash size={16} /> Delete</>
+                  : <><Trash size={16} /> Yes, delete</>
               }
             </Button>
           </DialogFooter>

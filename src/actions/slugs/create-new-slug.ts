@@ -6,8 +6,9 @@ import { checkDuplicateSlug } from "./check-duplicate-slug";
 import z from "zod";
 import { createSlugSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
+import { Tag } from "@prisma/client";
 
-export const createNewSlug = async (values: z.infer<typeof createSlugSchema>) => {
+export const createNewSlug = async (values: z.infer<typeof createSlugSchema>, tags: Tag[]) => {
   const session = await auth();
   
   if (!session?.user) {
@@ -26,6 +27,11 @@ export const createNewSlug = async (values: z.infer<typeof createSlugSchema>) =>
     data: {
       ...values,
       userId: session.user.id,
+
+      Tags: {
+        // 'connect' puede recibir un array para conectar múltiples registros
+        connect: tags.map((tag) => ({ id: tag.id })), // Asumiendo que 'tagIds' es un array de strings
+      },
     }
   });
 

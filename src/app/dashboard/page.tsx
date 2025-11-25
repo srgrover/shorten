@@ -41,7 +41,7 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
 
                     <TagsButton tags={ tags as Tag[] || [] } />
 
-                    <NewLinkModal tags={[]}>
+                    <NewLinkModal tags={tags as Tag[] || []}>
                         <Button size="sm" color="gray" variant="default">
                             <BiPlus size={16} />
                             Create Link

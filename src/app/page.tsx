@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa6";
 
 export default function Home() {
   return (
-    <section className="flex p-15 min-h-screen justify-center mt-12">
+    <section className="flex p-15 min-h-screen justify-center w-full mt-12">
       <div className="mx-auto max-w-[43rem]">
         <div className="text-center flex flex-col gap-3 justify-center items-center">
           <BiLinkAlt size={50} className="p-3 text-white bg-gray-800 rounded-md" />
