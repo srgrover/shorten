@@ -1,3 +1,5 @@
+import { Suscription } from "./suscription.interface";
+
 export interface User {
     id: string;
     image: string | null;
@@ -5,4 +7,5 @@ export interface User {
     email: string | null;
     password: string;
     emailVerified: Date | null;
+    suscription: Suscription;
 }

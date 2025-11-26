@@ -50,9 +50,13 @@ export function DeleteButtonModal({ slug }: Props) {
     const { ok } = await deleteSlug(data);
 
     if (!ok) {
-      
+      toast.error("Something went wrong deleting the link");
+      setLoading(false);
+      return;
     }
-    // TODO: Crear action server para eliminar el slug
+
+    toast.success("Link deleted successfully");
+    setLoading(false);
   }
 
   return (

@@ -12,11 +12,22 @@ export const getUserByEmail = async (user: User) => {
   }
 
   const userFound = await prisma.user.findUnique({
-    where: { email: user.email ?? ''}
+    where: { email: user.email ?? ''},
+    include: {
+      suscription: true
+    }
   });
+
+  if (!userFound) {
+    return {
+      ok: false,
+      message: "Account not found",
+      user: null
+    }
+  }
 
   return {
     ok: true,
-    user: userFound
-  }
+    user: userFound,
+  };
 }

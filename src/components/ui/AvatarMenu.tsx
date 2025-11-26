@@ -1,6 +1,6 @@
 'use client'
 
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useState } from "react"
 import { IoHomeOutline, IoLogOutOutline, IoSettingsOutline } from "react-icons/io5";
 import { RiDashboardLine } from "react-icons/ri";
@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import Link from "next/link";
 import { LuLoader } from "react-icons/lu";
+import { User } from "@/interfaces";
 
 const menuItems = [
     {
@@ -28,13 +29,15 @@ const menuItems = [
     }
 ];
 
-export const AvatarMenu = () => {
-    const { data: session } = useSession();
+interface Props {
+    user: User | null
+}
+
+export const AvatarMenu = ({ user }: Props) => {
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    if (!session) return null;
-    const { user } = session;
+    if (!user) return null;
 
     const tryToSignOut = async () => {
         setLoading(true);
@@ -55,7 +58,20 @@ export const AvatarMenu = () => {
                 <DropdownMenuLabel>{user!.name}</DropdownMenuLabel>
                 <DropdownMenuLabel>
                     <p className="text-xs text-gray-400">{user!.email}</p></DropdownMenuLabel>
+
                 <DropdownMenuSeparator />
+                
+                <DropdownMenuLabel className="flex justify-between">
+                    <span className="text-xs">
+                        Your plan
+                    </span>
+                    <span className="text-xs text-gray-400">
+                        {user!.suscription?.name}
+                    </span>
+                </DropdownMenuLabel>
+
+                <DropdownMenuSeparator />
+
                 <DropdownMenuGroup>
                     {
                         menuItems.map(({ name, icon, href }, index) => (
@@ -69,13 +85,15 @@ export const AvatarMenu = () => {
                         ))
                     }
                 </DropdownMenuGroup>
+
                 <DropdownMenuSeparator />
+
                 <DropdownMenuItem onClick={() => tryToSignOut()} className="text-sm cursor-pointer flex gap-2 px-2 py-1 items-center rounded-md hover:bg-gray-100">
-                        {
-                            !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
-                        }
-                        <span className="flex items-center self-center">Salir</span>
-                        <DropdownMenuShortcut></DropdownMenuShortcut>
+                    {
+                        !loading ? <IoLogOutOutline size={15} /> : <LuLoader size={15} className="animate-spin" />
+                    }
+                    <span className="flex items-center self-center">Salir</span>
+                    <DropdownMenuShortcut></DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

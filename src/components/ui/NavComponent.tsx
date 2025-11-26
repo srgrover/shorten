@@ -1,15 +1,23 @@
-'use client'
-
 import Link from "next/link"
 import { AvatarMenu } from "./AvatarMenu"
-import { useSession } from "next-auth/react"
 import { BiLinkAlt } from "react-icons/bi"
 import { FaGithub } from "react-icons/fa6"
 import { Badge } from "./badge"
 import { Button } from "./button"
+import { User } from "@/interfaces"
+import { Session } from "next-auth"
+import { getUserByEmail } from "@/actions"
 
-export const NavComponent = () => {
-    const { data: session } = useSession();
+interface Props {
+    session?: Session | null
+}
+
+export const NavComponent = async ({ session }: Props) => {
+    if (!session) return null;
+    const { user: userSession } = session;
+  
+    const { user } = await getUserByEmail(userSession!)
+    if (!user) return null;
 
     return (
         <nav className="flex w-full pb-3 pt-4 lg:px-4 sticky top-0 z-50 bg-white dark:bg-neutral-900">
@@ -37,8 +45,8 @@ export const NavComponent = () => {
                         </div>
 
                         {
-                            (session?.user)
-                                ? <AvatarMenu />
+                            (user)
+                                ? <AvatarMenu user={ user as User ?? null } />
                                 : <Button size="default" variant="outline" asChild>
                                     <Link href="/auth/login">Get started</Link>
                                 </Button>

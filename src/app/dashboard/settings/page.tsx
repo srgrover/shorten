@@ -3,6 +3,7 @@ import { auth } from "@/auth.config";
 import { ItemContent, ItemTitle, ItemDescription, ItemActions, Button, Item, FieldGroup, FieldDescription, FieldLegend, FieldSet, ItemMedia, SettingsForm } from "@/components";
 import { Download, Trash, Trash2 } from "lucide-react";
 import { Metadata } from "next";
+import { toast } from "sonner";
 
 export const metadata: Metadata = {
     title: "Settings - Dashboard",
@@ -11,10 +12,10 @@ export const metadata: Metadata = {
 export default async function SettingsPage() {
     const session = await auth();
     const {ok, message, user} = await getUserByEmail(session?.user!);
+    console.info('eeee',{user})
     
     if(!ok){
-        //TODO: Create a snackbar
-        alert(message);
+        toast.error(message)
         return;
     }
     

@@ -19,14 +19,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from './input';
 import { Textarea } from './textarea';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { createSlugSchema } from '@/schemas';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -44,6 +36,11 @@ export const NewLinkModal = ({ children, tags }: Props) => {
     const [selectedValue, setSelectedValue] = useState('');
 
     const handleSelectTag = (value: string) => {
+        if (tagsSelected.length >= 2){
+            toast.error("You can only select a maximum of two tags");
+            return;
+        }
+
         setSelectedValue(value);
         const tag = tags.find(t => t.name === value);
         if (!tag) return;
@@ -57,7 +54,7 @@ export const NewLinkModal = ({ children, tags }: Props) => {
         setTagsSelected(tagsSelected.filter(t => t.id !== tag.id))
     }
 
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
+    const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<z.infer<typeof createSlugSchema>>({
         resolver: zodResolver(createSlugSchema),
         defaultValues: {
             url: "",
@@ -76,6 +73,12 @@ export const NewLinkModal = ({ children, tags }: Props) => {
             return;
         }
 
+        toast.success("Link created successfully")
+        setLoading(false);
+        setTagsSelected([]);
+        setSelectedValue('');
+        reset();
+        
         setOpen(false);
     }
 
