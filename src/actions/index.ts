@@ -17,3 +17,5 @@ export * from './tag/create-new-tag'
 export * from './tag/delete-tag'
 export * from './tag/get-tag-by-id'
 export * from './tag/get-tags-by-user-id'
+
+export * from './plan/get-all-plans'

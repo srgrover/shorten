@@ -1,7 +1,8 @@
 'use server';
 
 import prisma from "@/lib/prisma";
-import { User } from "next-auth";
+import { User } from "@/interfaces";
+import { revalidatePath } from "next/cache";
 
 export const updateUser = async (user: User) => {
   if (!user) {
@@ -18,8 +19,11 @@ export const updateUser = async (user: User) => {
     },
     data: {
       name: user.name,
+      suscriptionId: user.suscriptionId,
     }
   });
+
+  revalidatePath("/suscriptions");
 
   return {
     ok: true,
