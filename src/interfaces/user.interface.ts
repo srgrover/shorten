@@ -7,5 +7,6 @@ export interface User {
     email: string | null;
     password: string;
     emailVerified: Date | null;
+    suscriptionId: string;
     suscription: Suscription;
 }
