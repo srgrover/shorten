@@ -30,37 +30,39 @@ const config: NextAuthConfig = {
       return token;
     },
 
-    async signIn ({user}) {
+    async signIn({ user }) {
       if (!user.email) return false;
-
+    
       try {
-        const responseUser = await getUserByEmail(user)
-        const { ok, user: existingUser } = responseUser;
-
-        if (!ok) return false;
-
-        if (!existingUser) {
-          const createResponse = await createUser(user);
-          const { ok } = createResponse;
-
-          if (!ok) return false;
-          return true;
+        const responseUser = await getUserByEmail(user);
+        const { user: existingUser } = responseUser;
+    
+        if (existingUser) {
+          return true; 
         }
+    
+        const createResponse = await createUser(user);
+        if (!createResponse.ok) {
+          console.error('Error al crear el usuario:', createResponse.message);
+          return false;
+        }
+    
+        return true;
+    
       } catch (error) {
         console.error('Error al iniciar sesión: ', error);
-        throw new Error('Error al iniciar sesión.');
+        return false;
       }
-      return true;
     },
 
     async redirect({ url, baseUrl }) {
-      // Permite redirecciones relativas
+      // Allows relative redirects
       if (url.startsWith('/')) return `${baseUrl}${url}`;
 
-      // Permite redirecciones a otros dominios si vienen en la URL
+      // Allows redirects to other domains if they are in the URL
       if (new URL(url).origin === baseUrl) return url;
       
-      // Si no es ninguno de los anteriores (ej. primer login), redirige a dashboard
+      // If none of the above (e.g. first login), redirect to dashboard
       return baseUrl + '/dashboard';
     },
 
