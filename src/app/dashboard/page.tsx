@@ -8,12 +8,15 @@ import { BiPlus } from "react-icons/bi";
 import { LuWandSparkles } from "react-icons/lu";
 import { Button, NewLinkModal, TagsButton } from "@/components";
 import { SearchLinkInput } from "@/components/ui/SearchLinkInput";
-import { getTagsByUserId } from "@/actions";
+import { getTagsByUserId, getUserByEmail, logout } from "@/actions";
 import { Tag } from "@/interfaces/tag.interface";
 
 export default async function DashboardPage({ searchParams }: { searchParams?: { search?: string, tag?: string } }) {
     const session = await auth();
+    console.log({session})
     if (!session?.user) redirect('/auth/login')
+
+    const { user } = await getUserByEmail(session?.user!);
 
     let { slugs } = await getSlugsByUserId();
     let { tags } = await getTagsByUserId();
@@ -36,7 +39,7 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
                 <div className="flex gap-2 items-center justify-end">
                     <Button size="sm" color="gray" variant="outline">
                         <IoCubeOutline size={16} />
-                        <span className="flex self-center">{ slugs!.length || 0 } / 15</span>
+                        <span className="flex self-center">{ slugs!.length || 0 } / { user?.suscription?.limitLinks }</span>
                     </Button>
 
                     <TagsButton tags={ tags as Tag[] || [] } />
