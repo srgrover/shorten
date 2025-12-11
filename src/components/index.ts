@@ -9,6 +9,7 @@ export * from './ui/SettingsForm'
 export * from './ui/TagsButton'
 export * from './ui/NewTagModal'
 export * from './ui/SearchLinkInput'
+export * from './ui/SuscriptionCard'
 
 
 
@@ -28,3 +29,4 @@ export * from "./ui/item";
 export * from "./ui/separator";
 export * from "./ui/field";
 export * from "./ui/popover";
+export * from "./ui/card";
